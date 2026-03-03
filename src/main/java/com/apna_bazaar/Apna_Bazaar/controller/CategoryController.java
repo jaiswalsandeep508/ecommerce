@@ -21,4 +21,10 @@ public class CategoryController {
         CategoryResponseDTO categoryResponseDTO = categoryService.createCategory(categoryRequestDTO);
         return new ResponseEntity<>(categoryResponseDTO,HttpStatus.CREATED);
     }
+
+    @PutMapping("/admin/categories/{id}")
+    public ResponseEntity<CategoryResponseDTO> updateCategory(@PathVariable Long id,@RequestBody @Valid CategoryRequestDTO categoryRequestDTO){
+        CategoryResponseDTO categoryResponseDTO = categoryService.updateCategory(id,categoryRequestDTO);
+        return new ResponseEntity<>(categoryResponseDTO,HttpStatus.OK);
+    }
 }
