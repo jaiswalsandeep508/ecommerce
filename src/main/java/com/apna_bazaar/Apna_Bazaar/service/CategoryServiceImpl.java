@@ -48,8 +48,10 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    @Transactional
     public void deleteCategory(Long id) {
-
+       Category findCategory = findCategoryById(id);
+       categoryRepository.delete(findCategory);
     }
 
     @Override

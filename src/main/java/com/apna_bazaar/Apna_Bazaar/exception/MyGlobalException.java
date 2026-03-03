@@ -34,6 +34,7 @@ public class MyGlobalException {
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(ResourceNotExistException.class)
     public ResponseEntity<ExceptionResponseDto> myResourceNotExistException(ResourceNotExistException ex){
         response.setMessage(ex.getMessage());
         response.setErrorType("RESOURCE_NOT_FOUND");
