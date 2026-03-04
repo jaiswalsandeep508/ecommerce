@@ -2,7 +2,9 @@ package com.apna_bazaar.Apna_Bazaar.controller;
 
 import com.apna_bazaar.Apna_Bazaar.payload.request.CategoryRequestDTO;
 import com.apna_bazaar.Apna_Bazaar.payload.response.CategoryResponseDTO;
+import com.apna_bazaar.Apna_Bazaar.payload.response.CategoryResponsePageDTO;
 import com.apna_bazaar.Apna_Bazaar.service.CategoryService;
+import com.apna_bazaar.Apna_Bazaar.util.AppConstants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,5 +41,14 @@ public class CategoryController {
     @GetMapping("/public/categories/{id}")
     public ResponseEntity<CategoryResponseDTO> getCategoryById(@PathVariable Long id) {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
+    }
+
+    @GetMapping("/public/categories")
+    public ResponseEntity<CategoryResponsePageDTO> getAllCategories(
+            @RequestParam(defaultValue = AppConstants.PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(defaultValue = AppConstants.PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = AppConstants.SORT_BY) String sortBy,
+            @RequestParam(defaultValue = AppConstants.SORT_DIR) String sortDir){
+        return ResponseEntity.ok(categoryService.getAllCategories(pageNumber,pageSize,sortBy,sortDir));
     }
 }

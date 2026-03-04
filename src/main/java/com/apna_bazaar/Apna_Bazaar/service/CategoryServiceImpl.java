@@ -5,12 +5,18 @@ import com.apna_bazaar.Apna_Bazaar.exception.ResourceNotExistException;
 import com.apna_bazaar.Apna_Bazaar.model.Category;
 import com.apna_bazaar.Apna_Bazaar.payload.request.CategoryRequestDTO;
 import com.apna_bazaar.Apna_Bazaar.payload.response.CategoryResponseDTO;
+import com.apna_bazaar.Apna_Bazaar.payload.response.CategoryResponsePageDTO;
 import com.apna_bazaar.Apna_Bazaar.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,6 +63,34 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CategoryResponseDTO getCategoryById(Long id) {
         return modelMapper.map(findCategoryById(id),CategoryResponseDTO.class);
+    }
+
+    @Override
+    public CategoryResponsePageDTO getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase("asc")
+                ?Sort.by(sortBy).ascending()
+                :Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
+        Page<Category> categoryPage = categoryRepository.findAll(pageable);
+        List<CategoryResponseDTO> categoryResponseDTOList = categoryPage.getContent()
+                .stream()
+                .map(category -> modelMapper.map(category,CategoryResponseDTO.class))
+                .toList();
+
+        return categoryResponseDTO_To_CategoryPageResponseDTO(categoryResponseDTOList,categoryPage);
+    }
+
+    private CategoryResponsePageDTO categoryResponseDTO_To_CategoryPageResponseDTO(List<CategoryResponseDTO> categoryResponseDTOList, Page<Category> categoryPage) {
+        CategoryResponsePageDTO categoryResponsePageDTO = new CategoryResponsePageDTO();
+        categoryResponsePageDTO.setCategories(categoryResponseDTOList);
+        categoryResponsePageDTO.setPageNumber(categoryPage.getNumber());
+        categoryResponsePageDTO.setPageSize(categoryPage.getSize());
+        categoryResponsePageDTO.setTotalPages(categoryPage.getTotalPages());
+        categoryResponsePageDTO.setTotalElements(categoryPage.getTotalElements());
+        categoryResponsePageDTO.setLast(categoryPage.isLast());
+
+        return categoryResponsePageDTO;
     }
 
     //    ---------------------------------- Helper methods -------------------------------------------
