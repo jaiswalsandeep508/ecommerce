@@ -33,4 +33,11 @@ public class CategoryController {
         categoryService.deleteCategory(id);
         return ResponseEntity.ok("Delete Category successfully");
     }
+
+    // ----------- PUBLIC -----------
+
+    @GetMapping("/public/categories/{id}")
+    public ResponseEntity<CategoryResponseDTO> getCategoryById(@PathVariable Long id) {
+        return ResponseEntity.ok(categoryService.getCategoryById(id));
+    }
 }

@@ -56,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryResponseDTO getCategoryById(Long id) {
-        return null;
+        return modelMapper.map(findCategoryById(id),CategoryResponseDTO.class);
     }
 
     //    ---------------------------------- Helper methods -------------------------------------------
