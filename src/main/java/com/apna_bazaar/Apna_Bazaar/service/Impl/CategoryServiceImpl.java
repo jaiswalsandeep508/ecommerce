@@ -1,4 +1,4 @@
-package com.apna_bazaar.Apna_Bazaar.service;
+package com.apna_bazaar.Apna_Bazaar.service.Impl;
 
 import com.apna_bazaar.Apna_Bazaar.exception.ResourceAlreadyExistsException;
 import com.apna_bazaar.Apna_Bazaar.exception.ResourceNotExistException;
@@ -7,6 +7,7 @@ import com.apna_bazaar.Apna_Bazaar.payload.request.CategoryRequestDTO;
 import com.apna_bazaar.Apna_Bazaar.payload.response.CategoryResponseDTO;
 import com.apna_bazaar.Apna_Bazaar.payload.response.CategoryResponsePageDTO;
 import com.apna_bazaar.Apna_Bazaar.repository.CategoryRepository;
+import com.apna_bazaar.Apna_Bazaar.service.CategoryService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,11 +18,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
